@@ -181,7 +181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb6712c460be23c40ad2bc192aa6cbe9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  category: 0
+  category: 2
   color: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &114054826884013452
 MonoBehaviour:
@@ -195,7 +195,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.38431373, g: 0.15294118, b: 0.47058824, a: 1}
+  m_Color: {r: 0.24313726, g: 0.08627451, b: 0.3529412, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -249,7 +249,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.38431373, g: 0.15294118, b: 0.47058824, a: 1}
+  m_Color: {r: 0.24313726, g: 0.08627451, b: 0.3529412, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -275,7 +275,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb6712c460be23c40ad2bc192aa6cbe9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  category: 0
+  category: 2
   color: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &114296605526223730
 MonoBehaviour:
@@ -289,7 +289,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.38431373, g: 0.15294118, b: 0.47058824, a: 1}
+  m_Color: {r: 0.24313726, g: 0.08627451, b: 0.3529412, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -368,7 +368,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb6712c460be23c40ad2bc192aa6cbe9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  category: 0
+  category: 2
   color: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &114508605916047188
 MonoBehaviour:
@@ -381,7 +381,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb6712c460be23c40ad2bc192aa6cbe9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  category: 0
+  category: 2
   color: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &114816171364437316
 MonoBehaviour:
@@ -422,7 +422,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.38431373, g: 0.15294118, b: 0.47058824, a: 1}
+  m_Color: {r: 0.24313726, g: 0.08627451, b: 0.3529412, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:

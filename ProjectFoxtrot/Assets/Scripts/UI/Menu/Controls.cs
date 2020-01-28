@@ -9,6 +9,7 @@ public enum UserAction
     Pause, Interact,
     Forward, Backward, Left, Right,
     Jump, Crouch, Sprint,
+    Pickup, Throw
 }
 /// <summary> Instead of string axis, why not enum axis? </summary>
 public enum InputAxis
