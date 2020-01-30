@@ -472,7 +472,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 95f33e04df43c674880ade3948562347, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 2
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
@@ -864,7 +864,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 95f33e04df43c674880ade3948562347, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 2
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
@@ -1915,7 +1915,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 95f33e04df43c674880ade3948562347, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 2
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
@@ -3609,7 +3609,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 95f33e04df43c674880ade3948562347, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 2
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
@@ -4071,7 +4071,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 95f33e04df43c674880ade3948562347, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 2
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
@@ -6052,7 +6052,6 @@ GameObject:
   - component: {fileID: 808393241}
   - component: {fileID: 808393240}
   - component: {fileID: 808393239}
-  - component: {fileID: 808393242}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -6105,17 +6104,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &808393242
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 808393238}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 464beb6c1f030fe409df5f859bb38159, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &835783771
 GameObject:
   m_ObjectHideFlags: 0
@@ -8903,7 +8891,7 @@ Prefab:
     - target: {fileID: 114550569968795176, guid: 65e039d6a0d9a7f46b8746e912f94ae4,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114550569968795176, guid: 65e039d6a0d9a7f46b8746e912f94ae4,
         type: 2}
@@ -8954,11 +8942,11 @@ Prefab:
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
-      objectReference: {fileID: 550847836}
+      objectReference: {fileID: 2001003818}
     - target: {fileID: 114550569968795176, guid: 65e039d6a0d9a7f46b8746e912f94ae4,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
-      value: SetTrigger
+      value: BackSettingsMenu
       objectReference: {fileID: 0}
     - target: {fileID: 114550569968795176, guid: 65e039d6a0d9a7f46b8746e912f94ae4,
         type: 2}
@@ -8968,7 +8956,7 @@ Prefab:
     - target: {fileID: 114550569968795176, guid: 65e039d6a0d9a7f46b8746e912f94ae4,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_StringArgument
-      value: Join_FromLeft
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 65e039d6a0d9a7f46b8746e912f94ae4, type: 2}
@@ -10212,7 +10200,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 95f33e04df43c674880ade3948562347, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 2
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
@@ -11445,7 +11433,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 95f33e04df43c674880ade3948562347, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 2
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
@@ -14104,7 +14092,7 @@ Prefab:
     - target: {fileID: 114550569968795176, guid: 65e039d6a0d9a7f46b8746e912f94ae4,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 224122876189280294, guid: 65e039d6a0d9a7f46b8746e912f94ae4,
         type: 2}
@@ -14263,6 +14251,61 @@ Prefab:
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
       value: Menu
+      objectReference: {fileID: 0}
+    - target: {fileID: 114550569968795176, guid: 65e039d6a0d9a7f46b8746e912f94ae4,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114550569968795176, guid: 65e039d6a0d9a7f46b8746e912f94ae4,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114550569968795176, guid: 65e039d6a0d9a7f46b8746e912f94ae4,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 290967796}
+    - target: {fileID: 114550569968795176, guid: 65e039d6a0d9a7f46b8746e912f94ae4,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: SetTrigger
+      objectReference: {fileID: 0}
+    - target: {fileID: 114550569968795176, guid: 65e039d6a0d9a7f46b8746e912f94ae4,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 114550569968795176, guid: 65e039d6a0d9a7f46b8746e912f94ae4,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
+      value: Leave_ToLeft
+      objectReference: {fileID: 0}
+    - target: {fileID: 114550569968795176, guid: 65e039d6a0d9a7f46b8746e912f94ae4,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 114550569968795176, guid: 65e039d6a0d9a7f46b8746e912f94ae4,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114550569968795176, guid: 65e039d6a0d9a7f46b8746e912f94ae4,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 2001003818}
+    - target: {fileID: 114550569968795176, guid: 65e039d6a0d9a7f46b8746e912f94ae4,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: PauseGame
+      objectReference: {fileID: 0}
+    - target: {fileID: 114550569968795176, guid: 65e039d6a0d9a7f46b8746e912f94ae4,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 65e039d6a0d9a7f46b8746e912f94ae4, type: 2}
@@ -15589,7 +15632,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38e249bffe892d4439fd45796d82bc11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pauseMenu: {fileID: 290967795}
+  mainMenuAnimator: {fileID: 550847836}
+  pauseMenuAnimator: {fileID: 290967796}
 --- !u!114 &2001003819
 MonoBehaviour:
   m_ObjectHideFlags: 0

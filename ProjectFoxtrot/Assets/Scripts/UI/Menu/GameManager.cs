@@ -6,9 +6,13 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance = null;
 
-    [Header("Pause menu")]
-    [SerializeField] private Transform pauseMenu = null;
+    [Header("General")]
+    [SerializeField] private Animator mainMenuAnimator = null;
 
+    [Header("Pause menu")]
+    [SerializeField] private Animator pauseMenuAnimator = null;
+
+    public bool GameIsPaused { get { return Time.timeScale == 0f ? true : false; } set { PauseGame(value); } }
 
 
     private void Awake()
@@ -36,19 +40,30 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadSceneAsync(name, LoadSceneMode.Single);
     }
 
-    public void PauseGame(bool paused)
+    public void PauseGame(bool pause)
     {
-        if(paused)
+        if(pause)
         {
             Time.timeScale = 0f;
-            pauseMenu.GetComponent<Animator>().SetTrigger("Join_FromRight");
+            pauseMenuAnimator.GetComponent<Animator>().SetTrigger("Join_FromRight");
         }
         else
         {
             Time.timeScale = 1f;
-            pauseMenu.GetComponent<Animator>().SetTrigger("Leave_ToRight");
+            pauseMenuAnimator.GetComponent<Animator>().SetTrigger("Leave_ToRight");
         }
+    }
 
+    public void BackSettingsMenu()
+    {
+        if(GameIsPaused)
+        {
+            pauseMenuAnimator.SetTrigger("Join_FromLeft");
+        }
+        else
+        {
+            mainMenuAnimator.SetTrigger("Join_FromLeft");
+        }
     }
 
     public void QuitApplication()
