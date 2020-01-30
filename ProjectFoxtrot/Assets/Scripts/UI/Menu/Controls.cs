@@ -14,7 +14,7 @@ public enum UserAction
 /// <summary> Instead of string axis, why not enum axis? </summary>
 public enum InputAxis
 {
-    Vertical, Horizontal
+    Vertical, Horizontal, MouseX, MouseY
 }
 /// <summary> Instead of using integers for buttons, why not enums? </summary>
 public enum MouseButton
@@ -189,6 +189,8 @@ public class Controls : MonoBehaviour
     {
         if (axis == InputAxis.Horizontal) return GetAction(UserAction.Left) ? -1f : GetAction(UserAction.Right) ? 1f : 0f;
         else if (axis == InputAxis.Vertical) return GetAction(UserAction.Backward) ? -1f : GetAction(UserAction.Forward) ? 1f : 0f;
+        else if (axis == InputAxis.MouseX) return Input.GetAxis("Mouse X");
+        else if (axis == InputAxis.MouseY) return Input.GetAxis("Mouse Y");
         else return 0f;
     }
 

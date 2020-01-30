@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
 
@@ -14,8 +12,8 @@ public class PlayerMovement : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
+        float x = Controls.GetAxisRaw(InputAxis.Horizontal);
+        float z = Controls.GetAxisRaw(InputAxis.Vertical);
 
         Vector3 move = transform.right * x + transform.forward * z;
 
