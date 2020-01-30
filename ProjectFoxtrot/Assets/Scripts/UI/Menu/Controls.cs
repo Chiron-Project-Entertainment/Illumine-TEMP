@@ -2,6 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
+#region Enums
 /// <summary> The actions a player can make through input. </summary>
 public enum UserAction
 {
@@ -21,6 +22,7 @@ public enum MouseButton
 {
     Left, Right, Middle
 }
+#endregion
 
 /// <summary> The script to be used instead of the old Unity Input system. </summary>
 public class Controls : MonoBehaviour
@@ -28,7 +30,7 @@ public class Controls : MonoBehaviour
     /// <summary> The everlasting incarnation of the Controls script. </summary>
     public static Controls instance = null;
 
-    /// <summary>  </summary>
+    /// <summary> The keybinds keeper, with a few access functions implemented. </summary>
     [Serializable] private struct Keybinds
     {
         [SerializeField] private Keybind[] elements;
@@ -116,6 +118,10 @@ public class Controls : MonoBehaviour
     }
     [SerializeField] private Keybinds keybinds;
 
+    // Axis smoothing
+    private float movementAxisSmoothing = 0.05f;
+    private Vector2 movementAxisValues = Vector2.zero;
+
     private void Awake()
     {
         // Set the Controls static, with only one instance available per scene.
@@ -130,6 +136,22 @@ public class Controls : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        instance.movementAxisValues.x = Mathf.Lerp(instance.movementAxisValues.x, GetAxisRaw(InputAxis.Horizontal), instance.movementAxisSmoothing);
+        instance.movementAxisValues.y = Mathf.Lerp(instance.movementAxisValues.y, GetAxisRaw(InputAxis.Vertical), instance.movementAxisSmoothing);
+
+        if(GameManager.instance.GameStarted && GameManager.instance.GameIsPaused == false)
+        {
+            Cursor.lockState = CursorLockMode.Locked; // Locks the cursor to the screen 
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Confined;
+        }
+    }
+
+    #region Key Combos and keybinds
     /// <summary> 
     /// Assign a keybind to a certain action. Returns 0 if the
     /// keybind could not be added or that the key was
@@ -152,7 +174,10 @@ public class Controls : MonoBehaviour
     {
         return keybinds[action, true];
     }
+    #endregion
 
+    #region Rework of the Input commands
+    #region Get keys and mouse buttons
     /// <summary> Returns true during the frame the user starts pressing down the key. </summary>
     public static bool GetKeyDown(KeyCode key) { return Input.GetKeyDown(key); }
     /// <summary> Returns true while the user holds down the key. </summary>
@@ -169,7 +194,9 @@ public class Controls : MonoBehaviour
     /// <summary> Returns true during the frame the user releases the mouse button. </summary>
     public static bool GetMouseButtonUp(MouseButton button) { return GetMouseButtonUp((int)button); }
     public static bool GetMouseButtonUp(int button) { return Input.GetMouseButtonUp(button); }
+    #endregion
 
+    #region Get Combos and actions
     /// <summary> Returns true during the frame the user starts pressing down the key combination. </summary>
     public static bool GetComboDown(KeyCombo keyCombo) { return GetKeyDown(keyCombo.key) && keyCombo.modifiers.All(mod => GetKey(mod)); }
     /// <summary> Returns true while the user holds down the key combination. </summary>
@@ -187,17 +214,47 @@ public class Controls : MonoBehaviour
     /// <summary> Returns the value of the virtual axis with no smoothing filtering applied. </summary>
     public static float GetAxisRaw(InputAxis axis)
     {
-        if (axis == InputAxis.Horizontal) return GetAction(UserAction.Left) ? -1f : GetAction(UserAction.Right) ? 1f : 0f;
-        else if (axis == InputAxis.Vertical) return GetAction(UserAction.Backward) ? -1f : GetAction(UserAction.Forward) ? 1f : 0f;
-        else if (axis == InputAxis.MouseX) return Input.GetAxis("Mouse X");
-        else if (axis == InputAxis.MouseY) return Input.GetAxis("Mouse Y");
-        else return 0f;
+        switch(axis)
+        {
+            case InputAxis.Horizontal:
+                return GetAction(UserAction.Left) ? -1f : GetAction(UserAction.Right) ? 1f : 0f;
+            case InputAxis.Vertical:
+                return GetAction(UserAction.Backward) ? -1f : GetAction(UserAction.Forward) ? 1f : 0f;
+            case InputAxis.MouseX:
+                return Input.GetAxisRaw("Mouse X");
+            case InputAxis.MouseY:
+                return Input.GetAxisRaw("Mouse Y");
+            default:
+                return 0f;
+        }
     }
 
+    /// <summary> Returns the value of the virtual axis with the smoothing filtering applied. </summary>
+    public static float GetAxis(InputAxis axis)
+    {
+        switch (axis)
+        {
+            case InputAxis.Horizontal:
+                return instance.movementAxisValues.x;
+            case InputAxis.Vertical:
+                return instance.movementAxisValues.y;
+            case InputAxis.MouseX:
+                return Input.GetAxis("Mouse X");
+            case InputAxis.MouseY:
+                return Input.GetAxis("Mouse Y");
+            default:
+                return 0f;
+        }
+    }
+    #endregion
+
+    #region Check key press
     /// <summary> Returns true if there is any key currently pressed. </summary>
     public static bool AnyKeyPressed { get { return KeyCodes.All.Any(key => GetKey(key)); } }
     /// <summary> Returns true if there is any keyboard key currently pressed. </summary>
     public static bool AnyKeyboardKeyPressed { get { return KeyCodes.All.Any(key => !KeyCodes.mouseButtons.Contains(key) && GetKey(key)); } }
     /// <summary> Returns true if there is any mouse button currently pressed. </summary>
     public static bool AnyMouseButtonPressed { get { return KeyCodes.mouseButtons.Any(button => GetKey(button)); } }
+    #endregion
+    #endregion
 }

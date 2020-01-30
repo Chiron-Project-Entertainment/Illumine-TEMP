@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Animator pauseMenuAnimator = null;
 
     public bool GameIsPaused { get { return Time.timeScale == 0f ? true : false; } set { PauseGame(value); } }
-
+    public bool GameStarted { get; set; }
 
     private void Awake()
     {
@@ -45,12 +45,12 @@ public class GameManager : MonoBehaviour
         if(pause)
         {
             Time.timeScale = 0f;
-            pauseMenuAnimator.GetComponent<Animator>().SetTrigger("Join_FromRight");
+            pauseMenuAnimator.GetComponent<Animator>().SetTrigger("Join_FromLeft");
         }
         else
         {
             Time.timeScale = 1f;
-            pauseMenuAnimator.GetComponent<Animator>().SetTrigger("Leave_ToRight");
+            pauseMenuAnimator.GetComponent<Animator>().SetTrigger("Leave_ToLeft");
         }
     }
 
