@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
 
     public void LoadScene(string name)
     {
-        SceneManager.LoadSceneAsync(name, LoadSceneMode.Single);
+        SceneManager.LoadScene(name, LoadSceneMode.Single);
     }
 
     public void PauseGame(bool pause)
