@@ -1,28 +1,47 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class MouseLook : MonoBehaviour {
+public class MouseLook : MonoBehaviour 
+{
+    [Header("Components")]
+    [SerializeField] private Transform playerTransform = null;
+    [SerializeField] private PlayerMovement playerMovement = null;
 
-    // Varaibles
+    [Header("Mouse")]
+    [SerializeField] private float mouseSensitivity = 100f;
 
-    public float mouseSensitivity = 100f;
-
-    public Transform playerBody; // Reference from camera to the player body so it can be rotated // DON'T FORGET TO LINK THE PLAYER BODY!
-
-    float xRotation = 0f;
+    [Header("Restrictions")]
+    [SerializeField] [Range(0f, 90f)] private float xAngleRotationLimit = 90f;
+    [SerializeField] [Range(0f, 180f)] private float yAngleRotationLimit = 30f;
+    private float xRotation = 0f;
+    private float yRotation = 0f;
+    
 	
 	void Update ()
     {
-        float mouseX = Controls.GetAxis(InputAxis.MouseX) * mouseSensitivity * Time.deltaTime; // Gather input and multiply it by mouse sensitivity
-        float mouseY = Controls.GetAxis(InputAxis.MouseY) * mouseSensitivity * Time.deltaTime;
+        Vector2 mouse = new Vector2(Controls.GetAxis(InputAxis.MouseX), Controls.GetAxis(InputAxis.MouseY)) * mouseSensitivity * Time.deltaTime;
 
-        xRotation -= mouseY; // += will flip the rotation // Could be used for inverted look settings 
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f); // Will prevent the player from overrotating and looking behind himself
-
-        transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f); // Unity uses Quaternion to handle rotations
-        playerBody.Rotate(Vector3.up * mouseX);
-
+        // Calculate the vertical rotation (around the X axis) of the camera
+        xRotation -= mouse.y; // += will flip the rotation // Could be used for inverted look settings 
+        xRotation = Mathf.Clamp(xRotation, -xAngleRotationLimit, xAngleRotationLimit); // Will prevent the player from overrotating and looking behind himself
         
+
+        if(playerMovement.OnGround)
+        {
+            // Rotates the player if on the ground
+            playerTransform.Rotate(Vector3.up * mouse.x);
+
+            // Rotates the player if just finished falling and rotated the camera.
+            playerTransform.Rotate(Vector3.up, yRotation);
+            yRotation = 0f;
+        }
+        else
+        {
+            // Calculates the horizontal rotation (around the Y axis) of the camera if in the air
+            yRotation += mouse.x;
+            yRotation = Mathf.Clamp(yRotation, -yAngleRotationLimit, yAngleRotationLimit);
+        }
+
+        // Applies rotation to the camera
+        transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
     }
 }

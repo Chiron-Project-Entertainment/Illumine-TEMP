@@ -1,93 +1,117 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour {
+[RequireComponent(typeof(CharacterController))]
+public class PlayerMovement : MonoBehaviour 
+{
+    [Header("Components")]
+    [SerializeField] private Transform groundCheck = null;
+    [SerializeField] private LayerMask groundMask = 512;
+    private CharacterController controller = null;
 
-    /// <summary>
-    /// StepOfset causes issues with collision e.g. steo ofset etc
-    /// </summary>
+    [Header("General")]
+    [SerializeField] private float standUpHeight = 1.8f;
+    [SerializeField] private float gravity = 9.81f;
+    [SerializeField] private float groundDistance = 0.5f;
+    private Vector3 velocity = Vector3.zero;
+    private bool ceilingAbove = false;
+    public bool OnGround { get; private set; }
+    public bool IsSprinting { get; private set; }
+    public bool IsCrouching { get; private set; }
 
-    // Variables
+    [Header("Movement")]
+    [SerializeField] [Range(0, 15)] private float forwardSpeed = 4f;
+    [SerializeField] [Range(0, 15)] private float lateralSpeed = 2f;
 
-    public CharacterController controller;
+    [Header("Input Multipliers")]
+    [SerializeField] [Range(0, 1)] private float crouchingMultiplier = 0.5f;
+    [SerializeField] [Range(1, 5)] private float sprintingMultiplier = 1.5f;
 
-    public float speed = 12f; // Player movement speed
+    [Header("Jumping")]
+    [SerializeField] [Range(0, 6)] public float jumpHeight = 0.7f;
 
-    // Velocity implementation
 
-    public float gravity = -9.81f;
+    private void Awake()
+    {
+        controller = GetComponent<CharacterController>();
+        controller.height = standUpHeight;
+    }
 
-    Vector3 velocity;
-
-    // Ground check implementation
-
-    public Transform groundCheck; // References the Ground Check object on the First Person Player for use later in script
-
-    public float groundDistance = 0.4f; // Radius of the sphere that will check for collision 
-
-    public LayerMask groundMask; // Controlls what objects the sphere should check for
-
-    bool isGrounded;
-
-    // Jump Implementation
-
-    public float lowJumpHeight = 2f;
-
-    public float highJumpHeight = 3.5f;
-
-    private float timeHeld { get { return jumpHoldStart != -1 ? (Time.time - jumpHoldStart) : 0f; } }
-
-    private float jumpHoldStart = -1f;
-
-    public float timeToHold = 0.3f;
 	void Update ()
     {
-        // Checks if the player is grounded
+        ceilingAbove = Physics.CheckSphere(transform.position + transform.up * (standUpHeight / 2), groundDistance, groundMask);
+        OnGround = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        IsSprinting = Controls.GetAction(UserAction.Sprint);
 
-        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask); // Uses the result of the physics check and creates a tiny invisible sphere ->
-        //beneath the player with the radius specified and if it collides with anything in the groundMask then isGrounded will be true.
-
-        if(isGrounded && velocity.y < 0)
+        // Resets the player's velocity. 
+        if (OnGround)
         {
-            velocity.y = -2f; // Forces the player down on the ground 
+            // If on the ground, set the velocity to 0, as it will be modified by input (if any).
+            velocity.x = 0f;
+            velocity.z = 0f;
+            // It is set to smaller than 0
+            // only to make sure that the player stays firmly onto the ground.
+            if (velocity.y < 0) velocity.y = -2f;
         }
 
-        // Gathers input
-        float x = Controls.GetAxis(InputAxis.Horizontal);
-        float z = Controls.GetAxis(InputAxis.Vertical);
+        // Gather input and make sure that the diagonal movement is functioning correctly.
+        Vector3 input = new Vector3(Controls.GetAxis(InputAxis.Horizontal), 0, Controls.GetAxis(InputAxis.Vertical));
+        if (input.magnitude > 1) input /= input.magnitude;
 
-        Vector3 move = transform.right * x + transform.forward * z; // Takes the direction the player is facing and goes to the right and forward
-        
-        if(move.sqrMagnitude > 1) // Fixes diagnal movement speed
+        // Modify the player velocity based on input.
+        if(OnGround)
         {
-            move = move / move.sqrMagnitude; // sqrMagnitude is the vectors squred length
-        }
+            // Calculating the horizontal (lateral) movement.
+            float horizontalMove = input.x * lateralSpeed;
 
-        controller.Move(move * speed * Time.deltaTime); // NEED EXPLANTION // Time.deltaTime provides frame rate independence by providing the time between the current and previous frame
+            // Calculating the vertical (forward / backward) movement.
+            float verticalMove = input.z;
+            if (input.z > 0) verticalMove *= forwardSpeed;
+            else verticalMove *= lateralSpeed;
+
+            // Calculating the multipliers.
+            float multiplier = 1f;
+            if (IsCrouching)
+            {
+                multiplier *= crouchingMultiplier;
+            }
+            else if (IsSprinting) 
+            {
+                multiplier *= sprintingMultiplier;
+            }
+
+            if (input.x != 0)
+                velocity.x = horizontalMove * multiplier;
+            if (input.z != 0)
+                velocity.z = verticalMove * multiplier;
+        }
 
         // Jump implementation
-        
-        if(Controls.GetActionDown(UserAction.Jump))
+        if(Controls.GetAction(UserAction.Jump) && OnGround && !ceilingAbove)
         {
-            jumpHoldStart = Time.time;
+            velocity.y = Mathf.Sqrt(jumpHeight * 2 * gravity);
         }
 
-
-        if(Controls.GetActionUp(UserAction.Jump) && isGrounded)
+        // Crouch implementation
+        if(Controls.GetAction(UserAction.Crouch))
         {
-            if (timeHeld < timeToHold)
+            if(!IsCrouching)
             {
-                velocity.y = Mathf.Sqrt(lowJumpHeight * -2 * gravity);
+                controller.height = standUpHeight / 2;
+                IsCrouching = true;
+                if(OnGround)
+                {
+                    velocity.y = -1000;
+                }
             }
-            else
-            {
-                velocity.y = Mathf.Sqrt(highJumpHeight * -2 * gravity);
-            }
-            jumpHoldStart = -1f;
+        }
+        else if(IsCrouching && !ceilingAbove)
+        {
+            controller.height = standUpHeight;
+            IsCrouching = false;
         }
 
-        if (!isGrounded) // Fixes collision issues with objects that have collision
+        // Fixes collision issues with objects that have collision
+        if (!OnGround) 
         {
             controller.slopeLimit = 0f;
             controller.stepOffset = 0f;
@@ -99,9 +123,10 @@ public class PlayerMovement : MonoBehaviour {
         }
 
         // Velocity implementation
+        // Apply the gravity onto the velocity
+        velocity.y -= gravity * Time.deltaTime; 
 
-        velocity.y += gravity * Time.deltaTime; // Increases velocity by the gravity number 
-
-        controller.Move(velocity * Time.deltaTime); // Adds velocity to the player // Player moves based on velocity 
+        // Move the player based on the velocity
+        controller.Move((velocity.x * transform.right + velocity.y * transform.up + velocity.z * transform.forward) * Time.deltaTime); 
 	}
 }
