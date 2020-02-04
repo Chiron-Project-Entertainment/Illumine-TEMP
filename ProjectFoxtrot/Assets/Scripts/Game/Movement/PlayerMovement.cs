@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform groundCheck = null;
     [SerializeField] private LayerMask groundMask = 512;
     private CharacterController controller = null;
+    [SerializeField] private Animator headAnimator = null;
 
     [Header("General")]
     [SerializeField] private float gravity = 9.81f;
@@ -28,6 +29,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] [Range(0, 15)] private float forwardSpeed = 4.0f;
     [SerializeField] [Range(0, 15)] private float lateralSpeed = 2.0f;
     public bool IsSprinting { get; private set; }
+    public bool IsWalking { get { return !isSliding && !IsSprinting && OnGround && (Mathf.Abs(velocity.x) > 0.35f || Mathf.Abs(velocity.z) > 0.35f); } }
 
     [Header("Jumping")]
     [SerializeField] [Range(0, 6)] public float jumpHeight = 1.0f;
@@ -73,6 +75,7 @@ public class PlayerMovement : MonoBehaviour
         if (Controls.GetActionDown(UserAction.Jump) && OnGround && !ceilingAbove)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * 2 * gravity);
+            headAnimator.SetTrigger("Jumped");
         }
 
 
@@ -177,6 +180,12 @@ public class PlayerMovement : MonoBehaviour
 
 
         // Move the player based on the velocity
-        controller.Move((velocity.x * transform.right + velocity.y * transform.up + velocity.z * transform.forward) * Time.deltaTime); 
+        controller.Move((velocity.x * transform.right + velocity.y * transform.up + velocity.z * transform.forward) * Time.deltaTime);
+
+        // Update animations
+        headAnimator.SetBool("IsSliding", isSliding);
+        headAnimator.SetBool("IsSprinting", IsSprinting);
+        headAnimator.SetBool("IsWalking", IsWalking);
+        headAnimator.SetBool("OnGround", OnGround);
 	}
 }
