@@ -640,14 +640,19 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 768
-  standUpHeight: 1.8
   gravity: 9.81
   groundDistance: 0.5
+  generalTransitionSpeed: 4
+  slidingTransitionSpeed: 0.75
+  sprintingMultiplier: 2
+  crouchingMultiplier: 0.5
   forwardSpeed: 4
   lateralSpeed: 2
-  crouchingMultiplier: 0.5
-  sprintingMultiplier: 2
-  jumpHeight: 1.99
+  jumpHeight: 0.9
+  standUpHeight: 1.8
+  crouchHeight: 1
+  slidingStartDifference: 0.3
+  slidingStopDifference: 0.15
 --- !u!143 &128272680
 CharacterController:
   m_ObjectHideFlags: 0
@@ -3252,7 +3257,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 300485778}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 1908110080, guid: 89f0137620f6af44b9ba852b4190e64e, type: 3}
   m_Name: 
@@ -5170,7 +5175,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 426891776}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 1908110080, guid: 89f0137620f6af44b9ba852b4190e64e, type: 3}
   m_Name: 
@@ -16291,7 +16296,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1553576254
 RectTransform:
   m_ObjectHideFlags: 0
@@ -20249,7 +20254,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1935470015}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 1908110080, guid: 89f0137620f6af44b9ba852b4190e64e, type: 3}
   m_Name: 
@@ -21562,7 +21567,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2094298179}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 1908110080, guid: 89f0137620f6af44b9ba852b4190e64e, type: 3}
   m_Name: 
