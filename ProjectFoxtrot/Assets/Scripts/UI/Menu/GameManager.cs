@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        // Set the gameManager static, with only one instance available per scene and unkillable when scenes change 
+        // Set the gameManager static, with only one instance available per scene and not killable when scenes change 
         if (instance == null)
             instance = this;
         else

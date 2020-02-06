@@ -22,7 +22,7 @@ public class MouseLook : MonoBehaviour
 
         // Calculate the vertical rotation (around the X axis) of the camera
         xRotation -= mouse.y; // += will flip the rotation // Could be used for inverted look settings 
-        xRotation = Mathf.Clamp(xRotation, -xAngleRotationLimit, xAngleRotationLimit); // Will prevent the player from overrotating and looking behind himself
+        xRotation = Mathf.Clamp(xRotation, -xAngleRotationLimit, xAngleRotationLimit); // Will prevent the player from over-rotating and looking behind himself
         
 
         if(playerMovement.OnGround)

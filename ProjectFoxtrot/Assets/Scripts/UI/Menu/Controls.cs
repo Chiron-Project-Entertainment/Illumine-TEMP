@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
-#region Enums
+#region Enumerators
 /// <summary> The actions a player can make through input. </summary>
 public enum UserAction
 {
@@ -12,12 +12,12 @@ public enum UserAction
     Jump, Crouch, Sprint,
     Pickup, Throw
 }
-/// <summary> Instead of string axis, why not enum axis? </summary>
+/// <summary> Instead of string axis, why not enumerator axis? </summary>
 public enum InputAxis
 {
     Vertical, Horizontal, MouseX, MouseY
 }
-/// <summary> Instead of using integers for buttons, why not enums? </summary>
+/// <summary> Instead of using integers for buttons, why not enumerators? </summary>
 public enum MouseButton
 {
     Left, Right, Middle
@@ -30,7 +30,7 @@ public class Controls : MonoBehaviour
     /// <summary> The everlasting incarnation of the Controls script. </summary>
     public static Controls instance = null;
 
-    /// <summary> The keybinds keeper, with a few access functions implemented. </summary>
+    /// <summary> The key binds keeper, with a few access functions implemented. </summary>
     [Serializable] private struct Keybinds
     {
         [SerializeField] private Keybind[] elements;
@@ -65,7 +65,7 @@ public class Controls : MonoBehaviour
                 }
                 catch (InvalidOperationException)
                 {
-                    Debug.Log("The action " + action.ToString() + " has no keybind assigned!");
+                    Debug.Log("The action " + action.ToString() + " has no key bind assigned!");
                     return KeyCombo.Null;
                 }
             }
@@ -86,7 +86,7 @@ public class Controls : MonoBehaviour
                 }
                 catch (InvalidOperationException)
                 {
-                    Debug.Log("The action " + action.ToString() + " has no keybind assigned!");
+                    Debug.Log("The action " + action.ToString() + " has no key bind assigned!");
                     return new KeyCombo[2] { KeyCombo.Null, KeyCombo.Null };
                 }
             }
@@ -151,17 +151,17 @@ public class Controls : MonoBehaviour
         }
     }
 
-    #region Key Combos and keybinds
+    #region Key Combos and key binds
     /// <summary> 
-    /// Assign a keybind to a certain action. Returns 0 if the
-    /// keybind could not be added or that the key was
+    /// Assign a key bind to a certain action. Returns 0 if the
+    /// key bind could not be added or that the key was
     /// already in use; returns 1 if it has been assigned
     /// to the main KeyCombo; returns 2 if it has been assigned
     /// to the KeyCombo alternative.
     /// </summary>
     public static int AssignKeycombo(UserAction action, KeyCombo keyCombo)
     {
-        // Check if there is no action with this keybind already assigned.
+        // Check if there is no action with this key bind already assigned.
         if(instance.keybinds[keyCombo] == UserAction.None)
             return instance.keybinds.Assign(action, keyCombo);
 
@@ -204,11 +204,11 @@ public class Controls : MonoBehaviour
     /// <summary> Returns true during the frame the user releases the key combination. </summary>
     public static bool GetComboUp(KeyCombo keyCombo) { return GetKeyUp(keyCombo.key) && keyCombo.modifiers.All(mod => !GetKey(mod)); }
 
-    /// <summary> Returns true during the frame the user starts pressing down the keybind/s of the action. </summary>
+    /// <summary> Returns true during the frame the user starts pressing down the key bind/s of the action. </summary>
     public static bool GetActionDown(UserAction action) { return instance.keybinds[action, true].Any(combo => GetComboDown(combo)); }
-    /// <summary> Returns true while the user holds down the keybind/s of the action. </summary>
+    /// <summary> Returns true while the user holds down the key bind/s of the action. </summary>
     public static bool GetAction(UserAction action) { return instance.keybinds[action, true].Any(combo => GetCombo(combo)); }
-    /// <summary> Returns true during the frame the user releases the keybind/s of the action. </summary>
+    /// <summary> Returns true during the frame the user releases the key bind/s of the action. </summary>
     public static bool GetActionUp(UserAction action) { return instance.keybinds[action, true].Any(combo => GetComboUp(combo)); }
 
     /// <summary> Returns the value of the virtual axis with no smoothing filtering applied. </summary>

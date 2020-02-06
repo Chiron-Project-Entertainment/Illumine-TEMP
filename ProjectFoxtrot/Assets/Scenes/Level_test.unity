@@ -642,6 +642,7 @@ MonoBehaviour:
     m_Bits: 768
   headAnimator: {fileID: 2133905646}
   gravity: 9.81
+  gravityWhileWallRunning: 4
   groundDistance: 0.5
   generalTransitionSpeed: 4
   slidingTransitionSpeed: 0.75
@@ -678,7 +679,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 128272678}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 5.997722, z: -33.97}
+  m_LocalPosition: {x: 0, y: 6.65, z: -33.97}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 393818096}
