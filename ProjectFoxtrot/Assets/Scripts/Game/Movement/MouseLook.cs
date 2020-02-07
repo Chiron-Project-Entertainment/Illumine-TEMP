@@ -27,7 +27,7 @@ public class MouseLook : MonoBehaviour
 
         if(playerMovement.OnGround)
         {
-            // Rotates the player if on the ground
+            // Rotates the player if on the ground.
             playerTransform.Rotate(Vector3.up * mouse.x);
 
             // Rotates the player if just finished falling and rotated the camera.
@@ -36,12 +36,12 @@ public class MouseLook : MonoBehaviour
         }
         else
         {
-            // Calculates the horizontal rotation (around the Y axis) of the camera if in the air
+            // Calculates the horizontal rotation (around the Y axis) of the camera if in the air.
             yRotation += mouse.x;
             yRotation = Mathf.Clamp(yRotation, -yAngleRotationLimit, yAngleRotationLimit);
         }
 
-        // Applies rotation to the camera
+        // Applies rotation to the camera.
         transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
     }
 }
