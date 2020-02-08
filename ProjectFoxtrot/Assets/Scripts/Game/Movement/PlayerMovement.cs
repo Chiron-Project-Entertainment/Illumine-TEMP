@@ -7,8 +7,9 @@ public class PlayerMovement : MonoBehaviour
     #region Variables
     [Header("Components")]
     [SerializeField] private LayerMask groundMask = 512;
-    private CharacterController controller = null;
     [SerializeField] private Animator headAnimator = null;
+    [SerializeField] private MouseLook mouseLook = null;
+    private CharacterController controller = null;
 
     /// <summary>
     /// Collision checks
@@ -28,7 +29,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float gravity = 9.81f;
     [SerializeField] private float gravityWhileWallRunning = 4f;
     private float currentGravity = 0f;
-    private Vector3 velocity = Vector3.zero;
+    [HideInInspector] public Vector3 velocity = Vector3.zero;
     private bool ceilingAbove = false;
     private float ignoreOnGroundTime = 0f;
 
@@ -54,12 +55,14 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] [Range(0, 6)] public float jumpHeight = 0.9f;
     public bool OnGround { get; private set; }
     private float timeInAir = 0f;
+    private bool wallFell = false;
 
     [Header("Crouching & sliding")]
     [SerializeField] private float standUpHeight = 1.8f;
     [SerializeField] private float crouchHeight = 1f;
+    private float timeSliding = 0f;
     public bool IsCrouching { get; private set; }
-    private bool isSliding = false;
+    public bool isSliding { get; private set; }
     #endregion
 
     #region Methods
@@ -84,8 +87,8 @@ public class PlayerMovement : MonoBehaviour
         return Physics.SphereCast(
             new Ray(transform.TransformPoint(controller.center),
             transform.TransformDirection(localDirection)),
+            controller.radius * 0.8f,
             controller.radius,
-            controller.radius * 1.5f,
             groundMask,
             QueryTriggerInteraction.Ignore
         );
@@ -98,9 +101,21 @@ public class PlayerMovement : MonoBehaviour
     {
         currentGravity = gravity;
         IsWallRunning = false;
+        headAnimator.SetFloat("LastWallDirectionX", wallRunningDirection.x);
+        headAnimator.SetFloat("LastWallDirectionZ", wallRunningDirection.z);
         velocity.y = 0;
         wallRunningDirection = Vector3.zero;
         ignoreOnGroundTime = 0f;
+    }
+
+    /// <summary>
+    /// Reset the TimeInAir back to 0, while updating the LastTimeInAir and TimeInAir values of the animator.
+    /// </summary>
+    private void ResetTimeInAir()
+    {
+        headAnimator.SetFloat("LastTimeInAir", timeInAir);
+        timeInAir = 0f;
+        headAnimator.SetFloat("TimeInAir", timeInAir);
     }
 
     private void Update()
@@ -130,11 +145,27 @@ public class PlayerMovement : MonoBehaviour
             // only to make sure that the player stays firmly onto the ground.
             if (velocity.y < 0) velocity.y = -2f;
 
+            headAnimator.ResetTrigger("Fell");
+            headAnimator.ResetTrigger("WallFell");
             if (timeInAir != 0f)
             {
-                headAnimator.SetTrigger("Fell");
-                headAnimator.SetFloat("TimeInAir", timeInAir);
-                timeInAir = 0f;
+                ResetTimeInAir();
+                if (IsWallRunning || wallFell)
+                {
+                    wallFell = false;
+                    headAnimator.SetTrigger("WallFell");
+                    print("Wall fell, after " + headAnimator.GetFloat("LastTimeInAir") + "s!");
+                }
+                else
+                {
+                    headAnimator.SetTrigger("Fell");
+                    print("Fell, after " + headAnimator.GetFloat("LastTimeInAir") + "s!");
+                }
+            }
+
+            if (isSliding)
+            {
+                timeSliding += Time.deltaTime;
             }
 
 
@@ -167,7 +198,7 @@ public class PlayerMovement : MonoBehaviour
             if (!IsWallRunning && OnGround)
             {
                 // If we're sprinting, then let's see if we can wall run.
-                if(IsSprinting)
+                if (IsSprinting)
                 {
                     // Check if there is any direction in which we can wall run.
                     foreach (var wallDirection in wallRunningDirectionalPossibilities)
@@ -183,7 +214,7 @@ public class PlayerMovement : MonoBehaviour
                         }
                 }
                 // If we're not sprinting and / or we are not wall running, we'll do a basic jump.
-                if(!IsWallRunning)
+                if (!IsWallRunning)
                 {
                     velocity.y = Mathf.Sqrt(jumpHeight * 2 * currentGravity);
                     headAnimator.SetTrigger("Jumped");
@@ -199,13 +230,13 @@ public class PlayerMovement : MonoBehaviour
                 }
                 else
                 {
-                    // We're not changing the velocity because we've rotated 180, but the velocity on Z remains the same.
-                    transform.Rotate(transform.up, 180);
-                    headAnimator.SetTrigger("FlipHorizontal180");
+                    StartCoroutine(mouseLook.RotateHorizontal(Mathf.Pow(-1, Random.Range(0, 100)) * 180));
+                    velocity.z -= -wallRunningDirection.z * sprintingMultiplier * forwardSpeed;
                 }
                 StopWallRunning();
                 velocity.y = Mathf.Sqrt(jumpHeight * 2 * currentGravity);
-                headAnimator.SetTrigger("Jumped");
+                headAnimator.SetTrigger("WallJumped");
+                ResetTimeInAir();
             }
         }
 
@@ -219,6 +250,8 @@ public class PlayerMovement : MonoBehaviour
             if ((OnGround && ignoreOnGroundTime <= 0f) || !CanWallRun(wallRunningDirection))
             {
                 StopWallRunning();
+                print("Wall fell! Theoretically . . .");
+                wallFell = true;
             }
         }
 
@@ -247,6 +280,7 @@ public class PlayerMovement : MonoBehaviour
             controller.height = standUpHeight;
             IsCrouching = false;
             isSliding = false;
+            timeSliding = 0f;
             headAnimator.SetBool("IsSliding", false);
         }
 
@@ -270,6 +304,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 isSliding = false;
                 headAnimator.SetBool("IsSliding", false);
+                timeSliding = 0f;
             }
         }
         else
@@ -289,12 +324,10 @@ public class PlayerMovement : MonoBehaviour
 
         #region Updating animations
         // Update animations
-        headAnimator.SetBool("IsSprinting", IsSprinting);
-        headAnimator.SetBool("IsWalking", IsWalking);
-        headAnimator.SetBool("OnGround", OnGround);
+        headAnimator.SetFloat("Multiplier", IsSprinting ? 2f : (IsWalking ? 1f : (IsCrouching ? 0.5f : 0f)));
+        headAnimator.SetFloat("TimeSliding", timeSliding);
         headAnimator.SetBool("IsWallRunning", IsWallRunning);
-        headAnimator.SetFloat("WallRunningDirX", wallRunningDirection.x);
-        headAnimator.SetFloat("WallRunningDirZ", wallRunningDirection.z);
+        headAnimator.SetFloat("WallDirectionX", wallRunningDirection.x); headAnimator.SetFloat("WallDirectionZ", wallRunningDirection.z);
         #endregion
 
         #region Debugging
@@ -316,7 +349,7 @@ public class PlayerMovement : MonoBehaviour
         currentStatuses.ForEach(e => str += e + ", ");
         str = str.Remove(str.Length - 2, 2);
 
-        print(str);
+        //print(str);
         #endregion
     }
 
