@@ -1,11 +1,17 @@
-﻿using System;
+﻿///////////////////////////////////////////////////////////////
+///                                                         ///
+///             Script coded by Hakohn (Robert).            ///
+///                                                         ///
+///////////////////////////////////////////////////////////////
+
+using System;
 using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary> 
-/// A color palatte from which the children on this gameObject
+/// A color palette from which the children on this gameObject
 /// which contain the ColorType component will choose from.
 /// </summary>
 public class ColorPalette : MonoBehaviour

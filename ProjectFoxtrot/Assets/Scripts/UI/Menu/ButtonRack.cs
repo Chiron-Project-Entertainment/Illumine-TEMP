@@ -1,4 +1,10 @@
-﻿using System.Collections.Generic;
+﻿///////////////////////////////////////////////////////////////
+///                                                         ///
+///             Script coded by Hakohn (Robert).            ///
+///                                                         ///
+///////////////////////////////////////////////////////////////
+
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -85,9 +91,9 @@ public class ButtonRack : MonoBehaviour
         // Lastly, we create / reposition the top bar.
         SpawnOrMoveTo(topBottomBarPrefab, lastPosition - distanceBetweenButtons / 2 + distanceTillMargins, ref topBar);
 
-        // Find the parent of this object, to make sure that the button rack and other non-interactible object are
+        // Find the parent of this object, to make sure that the button rack and other non-interactive object are
         // set as the first siblings, and that they wouldn't sit as a layer on top of buttons (which would
-        // make the buttons unpressable).
+        // unintentionally make the buttons non-interactive).
         if (nonInteractibleParent == null)
             nonInteractibleParent = transform.GetComponentsInParent<Transform>().First(parent => parent.name.ToLower().Contains("no") && parent.name.ToLower().Contains("interact"));
         nonInteractibleParent.SetAsFirstSibling();

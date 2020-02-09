@@ -1,4 +1,10 @@
-﻿using System;
+﻿///////////////////////////////////////////////////////////////
+///                                                         ///
+///             Script coded by Hakohn (Robert).            ///
+///                                                         ///
+///////////////////////////////////////////////////////////////
+
+using System;
 using System.Linq;
 using UnityEngine;
 

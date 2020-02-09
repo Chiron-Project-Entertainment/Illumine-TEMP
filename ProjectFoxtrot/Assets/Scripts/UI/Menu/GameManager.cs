@@ -1,4 +1,9 @@
-﻿using System;
+﻿///////////////////////////////////////////////////////////////
+///                                                         ///
+///             Script coded by Hakohn (Robert).            ///
+///                                                         ///
+///////////////////////////////////////////////////////////////
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
 

@@ -1,4 +1,10 @@
-﻿using System.Collections.Generic;
+﻿///////////////////////////////////////////////////////////////
+///                                                         ///
+///             Script coded by Hakohn (Robert).            ///
+///                                                         ///
+///////////////////////////////////////////////////////////////
+
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -16,15 +22,15 @@ public class SettingsMenu : MonoBehaviour
     /// <summary> The toggle button used for enabling or disabling subtitles. </summary>
     [SerializeField] private Toggle subtitlesToggle = null;
     private bool subtitlesEnabled = false;
-    /// <summary> The dropdown holding all the languages available. </summary>
+    /// <summary> The drop-down holding all the languages available. </summary>
     [SerializeField] private TMP_Dropdown languageDropdown = null;
     #endregion
 
     #region Video settings variables
     [Header("Video settings")]
-    /// <summary> The dropdown holding all the resolution options. </summary>
+    /// <summary> The drop-down holding all the resolution options. </summary>
     [SerializeField] private TMP_Dropdown resolutionDropdown = null;
-    /// <summary> The dropdown holding all the quality types. </summary>
+    /// <summary> The drop-down holding all the quality types. </summary>
     [SerializeField] private TMP_Dropdown qualityDropdown = null;
     /// <summary> The toggle button used for going to and out of fullscreen. </summary>
     [SerializeField] private Toggle fullscreenToggle = null;
@@ -49,8 +55,8 @@ public class SettingsMenu : MonoBehaviour
         #endregion
 
         #region Video settings
-        #region Setting up the resolution and resolution dropdown.
-        // Adding the existing resolutions to the dropdown settings.
+        #region Setting up the resolution and resolution drop-down.
+        // Adding the existing resolutions to the drop-down settings.
         resolutionDropdown.ClearOptions();
 		List<string> resolutionOptions = new List<string>();
 		int maxScreenRes = 0;
@@ -70,8 +76,8 @@ public class SettingsMenu : MonoBehaviour
 		resolutionDropdown.RefreshShownValue();
         #endregion
 
-        #region Setting up the quality and quality dropdown.
-        // Adding the existing qualities to the dropdown settings.
+        #region Setting up the quality and quality drop-down.
+        // Adding the existing qualities to the drop-down settings.
         qualityDropdown.ClearOptions();
         List<string> qualityOptions = new List<string>();
         int currentQualitySettings = 0;
@@ -100,11 +106,8 @@ public class SettingsMenu : MonoBehaviour
         #endregion
     }
 
-    private void Update()
-    {
-    }
 
-    #region Methods used dynamically by buttons, dropdowns, sliders, toggles and input fields.
+    #region Methods used dynamically by buttons, drop-downs, sliders, toggles and input fields.
     public void SetSubtitles(bool areOn) { subtitlesEnabled = areOn; }
     public void SetLanguage(int languageIndex) { /*pass*/ }
 	public void SetQuality(int qualityIndex) { QualitySettings.SetQualityLevel(qualityIndex); }

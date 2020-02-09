@@ -1,4 +1,10 @@
-﻿using System.Collections;
+﻿///////////////////////////////////////////////////////////////
+///                                                         ///
+///             Script coded by Hakohn (Robert).            ///
+///                                                         ///
+///////////////////////////////////////////////////////////////
+
+using System.Collections;
 using UnityEngine;
 
 public class MouseLook : MonoBehaviour

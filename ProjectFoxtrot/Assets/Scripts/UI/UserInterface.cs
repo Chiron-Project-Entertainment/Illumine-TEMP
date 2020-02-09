@@ -1,4 +1,10 @@
-﻿using UnityEngine;
+﻿///////////////////////////////////////////////////////////////
+///                                                         ///
+///             Script coded by Hakohn (Robert).            ///
+///                                                         ///
+///////////////////////////////////////////////////////////////
+
+using UnityEngine;
 
 public class UserInterface : MonoBehaviour 
 {

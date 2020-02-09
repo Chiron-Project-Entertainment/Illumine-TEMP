@@ -1,5 +1,10 @@
-﻿using System;
-using System.Linq;
+﻿///////////////////////////////////////////////////////////////
+///                                                         ///
+///             Script coded by Hakohn (Robert).            ///
+///                                                         ///
+///////////////////////////////////////////////////////////////
+
+using System;
 using UnityEngine;
 
 /// <summary> A UserAction along with its attached KeyCombo and its alternative. </summary>

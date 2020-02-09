@@ -1,4 +1,10 @@
-﻿using System.Collections.Generic;
+﻿///////////////////////////////////////////////////////////////
+///                                                         ///
+///             Script coded by Hakohn (Robert).            ///
+///                                                         ///
+///////////////////////////////////////////////////////////////
+
+using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -74,7 +80,7 @@ public class Keybinder : Button
             {
                 KeyCombo keyCombo = new KeyCombo(lastKeyPressed, modifiersPressed.ToArray());
 
-                // Update the label text if the keybind was indeed changed.
+                // Update the label text if the key bind was indeed changed.
                 Controls.AssignKeycombo(userAction, keyCombo);
 
                 UpdateLabels();
