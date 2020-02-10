@@ -30,7 +30,6 @@ public class PlayerMovement : MonoBehaviour
     private SphereCheck ceilingCheck { get { return new SphereCheck(transform.TransformPoint(controller.center) + transform.up * crouchHeight, 0.4f); } }
     private HashSet<Vector3> wallRunningDirectionalPossibilities = null;
 
-
     [Header("General")]
     [SerializeField] private float gravity = 9.81f;
     [SerializeField] private float gravityWhileWallRunning = 4f;
@@ -42,15 +41,15 @@ public class PlayerMovement : MonoBehaviour
     [Header("Multipliers")]
     [SerializeField] private float generalTransitionSpeed = 4.0f;
     [SerializeField] private float slidingTransitionSpeed = 0.75f;
-    [SerializeField] [Range(1, 5)] private float sprintingMultiplier = 2.0f;
-    [SerializeField] [Range(0, 1)] private float crouchingMultiplier = 0.5f;
+    [SerializeField][Range(1, 5)] private float sprintingMultiplier = 2.0f;
+    [SerializeField][Range(0, 1)] private float crouchingMultiplier = 0.5f;
     private readonly float baseMultiplier = 1f;
     private float currentMultiplier = 1f;
     private float targetMultiplier = 1f;
 
     [Header("Movement")]
-    [SerializeField] [Range(0, 15)] private float forwardSpeed = 4.0f;
-    [SerializeField] [Range(0, 15)] private float lateralSpeed = 2.0f;
+    [SerializeField][Range(0, 15)] private float forwardSpeed = 4.0f;
+    [SerializeField][Range(0, 15)] private float lateralSpeed = 2.0f;
     public bool IsSprinting { get; private set; }
     public bool IsWalking { get { return !isSliding && !IsSprinting && OnGround && (Mathf.Abs(velocity.x) > 0.35f || Mathf.Abs(velocity.z) > 0.35f); } }
     public bool IsWallRunning { get; private set; }
@@ -58,7 +57,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 wallRunningDirection = Vector3.zero;
 
     [Header("Jumping")]
-    [SerializeField] [Range(0, 6)] public float jumpHeight = 0.9f;
+    [SerializeField][Range(0, 6)] public float jumpHeight = 0.9f;
     public bool OnGround { get; private set; }
     private float timeInAir = 0f;
     private bool wallFell = false;
@@ -90,14 +89,14 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     private bool CanWallRun(Vector3 localDirection)
     {
-        return Physics.SphereCast(
-            new Ray(transform.TransformPoint(controller.center),
-            transform.TransformDirection(localDirection)),
-            controller.radius * 0.8f,
-            controller.radius,
+        bool able = Physics.Raycast(
+            transform.TransformPoint(controller.center),
+            transform.TransformDirection(localDirection),
+            controller.radius * 2,
             groundMask,
             QueryTriggerInteraction.Ignore
         );
+        return able;
     }
 
     /// <summary>
@@ -128,7 +127,7 @@ public class PlayerMovement : MonoBehaviour
     {
         #region Updating status
         // Firstly, updating the current player status
-        OnGround = controller.isGrounded/*Physics.CheckSphere(groundCheck.position, groundCheck.radius, groundMask, QueryTriggerInteraction.Ignore)*/;
+        OnGround = controller.isGrounded /*Physics.CheckSphere(groundCheck.position, groundCheck.radius, groundMask, QueryTriggerInteraction.Ignore)*/ ;
         ceilingAbove = Physics.CheckSphere(ceilingCheck.position, ceilingCheck.radius, groundMask, QueryTriggerInteraction.Ignore);
         #endregion
 
@@ -160,12 +159,10 @@ public class PlayerMovement : MonoBehaviour
                 {
                     wallFell = false;
                     headAnimator.SetTrigger("WallFell");
-                    print("Wall fell, after " + headAnimator.GetFloat("LastTimeInAir") + "s!");
                 }
                 else
                 {
                     headAnimator.SetTrigger("Fell");
-                    print("Fell, after " + headAnimator.GetFloat("LastTimeInAir") + "s!");
                 }
             }
 
@@ -173,7 +170,6 @@ public class PlayerMovement : MonoBehaviour
             {
                 timeSliding += Time.deltaTime;
             }
-
 
             // Calculating the velocity
             // Calculating the horizontal (lateral) movement.
@@ -256,7 +252,6 @@ public class PlayerMovement : MonoBehaviour
             if ((OnGround && ignoreOnGroundTime <= 0f) || !CanWallRun(wallRunningDirection))
             {
                 StopWallRunning();
-                print("Wall fell! Theoretically . . .");
                 wallFell = true;
             }
         }
@@ -333,7 +328,8 @@ public class PlayerMovement : MonoBehaviour
         headAnimator.SetFloat("Multiplier", IsSprinting ? 2f : (IsWalking ? 1f : (IsCrouching ? 0.5f : 0f)));
         headAnimator.SetFloat("TimeSliding", timeSliding);
         headAnimator.SetBool("IsWallRunning", IsWallRunning);
-        headAnimator.SetFloat("WallDirectionX", wallRunningDirection.x); headAnimator.SetFloat("WallDirectionZ", wallRunningDirection.z);
+        headAnimator.SetFloat("WallDirectionX", wallRunningDirection.x);
+        headAnimator.SetFloat("WallDirectionZ", wallRunningDirection.z);
         #endregion
 
         #region Debugging
