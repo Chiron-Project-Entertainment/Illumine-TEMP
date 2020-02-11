@@ -107,6 +107,10 @@ public class Controls : MonoBehaviour
                     Debug.Log("The action " + action.ToString() + " has no key bind assigned!");
                     return new KeyCombo[2] { KeyCombo.Null, KeyCombo.Null };
                 }
+                catch (NullReferenceException)
+                {
+                    return new KeyCombo[2] { KeyCombo.Null, KeyCombo.Null };
+                }
             }
         }
 
@@ -259,9 +263,11 @@ public class Controls : MonoBehaviour
         switch (axis)
         {
             case InputAxis.Horizontal:
-                return instance.movementAxisValues.x;
+                if (instance != null) return instance.movementAxisValues.x;
+                else return 0f;
             case InputAxis.Vertical:
-                return instance.movementAxisValues.y;
+                if (instance != null) return instance.movementAxisValues.y;
+                else return 0f;
             case InputAxis.MouseX:
                 return Input.GetAxis("Mouse X");
             case InputAxis.MouseY:

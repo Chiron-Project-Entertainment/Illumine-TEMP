@@ -301,7 +301,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Check if we should be sprinting now or not.
-        if ((Controls.instance.AutoSprinting || Controls.GetAction(UserAction.Sprint)) && !IsCrouching && velocity.z >= forwardSpeed * 0.9f)
+        if (((Controls.instance != null && Controls.instance.AutoSprinting) || Controls.GetAction(UserAction.Sprint)) && !IsCrouching && velocity.z >= forwardSpeed * 0.9f)
         {
             IsSprinting = true;
         }
@@ -396,7 +396,7 @@ public class PlayerMovement : MonoBehaviour
         currentStatuses.ForEach(e => str += e + ", ");
         str = str.Remove(str.Length - 2, 2);
 
-        print(str);
+        //print(str);
         #endregion
     }
 
