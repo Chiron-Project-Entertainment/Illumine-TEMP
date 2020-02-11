@@ -55,5 +55,10 @@
     },
     "files.associations": {
         "iostream": "cpp"
-    }
+    },
+    "cSpell.words": [
+        "Behaviour",
+        "Lerp",
+        "Mathf"
+    ]
 }

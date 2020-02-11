@@ -13,20 +13,32 @@ using UnityEngine;
 public enum UserAction
 {
     None,
-    Pause, Interact,
-    Forward, Backward, Left, Right,
-    Jump, Crouch, Sprint,
-    Pickup, Throw
+    Pause,
+    Interact,
+    Forward,
+    Backward,
+    Left,
+    Right,
+    Jump,
+    Crouch,
+    Sprint,
+    Pickup,
+    Throw
 }
 /// <summary> Instead of string axis, why not enumerator axis? </summary>
 public enum InputAxis
 {
-    Vertical, Horizontal, MouseX, MouseY
+    Vertical,
+    Horizontal,
+    MouseX,
+    MouseY
 }
 /// <summary> Instead of using integers for buttons, why not enumerators? </summary>
 public enum MouseButton
 {
-    Left, Right, Middle
+    Left,
+    Right,
+    Middle
 }
 #endregion
 
@@ -41,7 +53,7 @@ public class Controls : MonoBehaviour
     {
         [SerializeField] private Keybind[] elements;
 
-        public UserAction this[KeyCombo keyCombo]
+        public UserAction this [KeyCombo keyCombo]
         {
             get
             {
@@ -59,7 +71,7 @@ public class Controls : MonoBehaviour
             }
         }
 
-        public KeyCombo this[UserAction action]
+        public KeyCombo this [UserAction action]
         {
             get
             {
@@ -77,7 +89,7 @@ public class Controls : MonoBehaviour
             }
         }
 
-        public KeyCombo[] this[UserAction action, bool includeAlt]
+        public KeyCombo[] this [UserAction action, bool includeAlt]
         {
             get
             {
@@ -85,7 +97,7 @@ public class Controls : MonoBehaviour
                 try
                 {
                     keybind = elements.First(e => e.action == action);
-                    if(includeAlt)
+                    if (includeAlt)
                         return new KeyCombo[2] { keybind.keyCombo, keybind.keyComboAlt };
                     else
                         return new KeyCombo[2] { keybind.keyCombo, KeyCombo.Null };
@@ -100,11 +112,11 @@ public class Controls : MonoBehaviour
 
         public int Assign(UserAction action, KeyCombo keyCombo)
         {
-            for(int i = 0; i < elements.Length; i++)
-                if(elements[i].action == action)
+            for (int i = 0; i < elements.Length; i++)
+                if (elements[i].action == action)
                 {
                     int val = 0;
-                    if(elements[i].changeMain)
+                    if (elements[i].changeMain)
                     {
                         elements[i].keyCombo = keyCombo;
                         val = 1;
@@ -122,18 +134,22 @@ public class Controls : MonoBehaviour
             return 0;
         }
     }
+
     [SerializeField] private Keybinds keybinds;
 
     // Axis smoothing
     private float movementAxisSmoothing = 0.05f;
     private Vector2 movementAxisValues = Vector2.zero;
 
+    // Variables set from SettingsMenu
+    public bool AutoSprinting { get; set; }
+
     private void Awake()
     {
         // Set the Controls static, with only one instance available per scene.
         if (instance == null)
         {
-            instance = this; 
+            instance = this;
         }
         else
         {
@@ -147,13 +163,15 @@ public class Controls : MonoBehaviour
         instance.movementAxisValues.x = Mathf.Lerp(instance.movementAxisValues.x, GetAxisRaw(InputAxis.Horizontal), instance.movementAxisSmoothing);
         instance.movementAxisValues.y = Mathf.Lerp(instance.movementAxisValues.y, GetAxisRaw(InputAxis.Vertical), instance.movementAxisSmoothing);
 
-        if(GameManager.instance.GameStarted && GameManager.instance.GameIsPaused == false)
+        if (GameManager.instance.GameStarted && GameManager.instance.GameIsPaused == false)
         {
             Cursor.lockState = CursorLockMode.Locked; // Locks the cursor to the screen 
+            Cursor.visible = false;
         }
         else
         {
             Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
         }
     }
 
@@ -168,7 +186,7 @@ public class Controls : MonoBehaviour
     public static int AssignKeycombo(UserAction action, KeyCombo keyCombo)
     {
         // Check if there is no action with this key bind already assigned.
-        if(instance.keybinds[keyCombo] == UserAction.None)
+        if (instance.keybinds[keyCombo] == UserAction.None)
             return instance.keybinds.Assign(action, keyCombo);
 
         Debug.Log("The " + keyCombo.ToString() + " is already assigned to " + instance.keybinds[keyCombo] + "!");
@@ -192,13 +210,13 @@ public class Controls : MonoBehaviour
     public static bool GetKeyUp(KeyCode key) { return Input.GetKeyUp(key); }
 
     /// <summary> Returns true during the frame the user starts pressing down the mouse button. </summary>
-    public static bool GetMouseButtonDown(MouseButton button) { return GetMouseButtonDown((int)button); }
+    public static bool GetMouseButtonDown(MouseButton button) { return GetMouseButtonDown((int) button); }
     public static bool GetMouseButtonDown(int button) { return Input.GetMouseButtonDown(button); }
     /// <summary> Returns true while the user holds down the mouse button. </summary>
-    public static bool GetMouseButton(MouseButton button) { return GetMouseButton((int)button); }
+    public static bool GetMouseButton(MouseButton button) { return GetMouseButton((int) button); }
     public static bool GetMouseButton(int button) { return Input.GetMouseButton(button); }
     /// <summary> Returns true during the frame the user releases the mouse button. </summary>
-    public static bool GetMouseButtonUp(MouseButton button) { return GetMouseButtonUp((int)button); }
+    public static bool GetMouseButtonUp(MouseButton button) { return GetMouseButtonUp((int) button); }
     public static bool GetMouseButtonUp(int button) { return Input.GetMouseButtonUp(button); }
     #endregion
 
@@ -220,7 +238,7 @@ public class Controls : MonoBehaviour
     /// <summary> Returns the value of the virtual axis with no smoothing filtering applied. </summary>
     public static float GetAxisRaw(InputAxis axis)
     {
-        switch(axis)
+        switch (axis)
         {
             case InputAxis.Horizontal:
                 return GetAction(UserAction.Left) ? -1f : GetAction(UserAction.Right) ? 1f : 0f;

@@ -45,6 +45,11 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(name, LoadSceneMode.Single);
     }
 
+    public void LoadSceneAdditive(string name)
+    {
+        SceneManager.LoadScene(name, LoadSceneMode.Additive);
+    }
+
     public void PauseGame(bool pause)
     {
         if(pause)

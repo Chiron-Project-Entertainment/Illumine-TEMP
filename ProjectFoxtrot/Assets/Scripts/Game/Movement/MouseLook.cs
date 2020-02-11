@@ -22,8 +22,12 @@ public class MouseLook : MonoBehaviour
     private float xRotation = 0f;
     private float yRotation = 0f;
 
-
     private bool manualRotationInProgress = false;
+
+    private void Awake()
+    {
+        playerMovement.headRotationFunc = RotateHorizontal;
+    }
 
     public IEnumerator RotateHorizontal(float degrees)
     {

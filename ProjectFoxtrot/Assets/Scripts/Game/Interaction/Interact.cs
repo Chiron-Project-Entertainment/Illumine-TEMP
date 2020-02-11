@@ -24,7 +24,7 @@ public class Interact : MonoBehaviour
 
     public float throwForce = 10f;
 
-    bool canCarry = false; //will be renamed to canHold
+    bool canHold = false;
 
     bool beingCarried = false;
 
@@ -36,43 +36,51 @@ public class Interact : MonoBehaviour
 
     public bool isThrowing;
 
+    void Start()
+    {
+        canHold = true;
+    }
+
     void Update()
     {
         RaycastHit hitInfo;
-        var rayCollision = Camera.main.ScreenPointToRay(Input.mousePosition);
+        var rayCollision = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, (Screen.height / 2)));
 
-        if (!isThrowing)
+        if (Controls.GetActionUp(UserAction.Pickup))
         {
-            if (Physics.Raycast(rayCollision, out hitInfo, 2.5f))
+            canHold = true;
+        }
+
+        if (Physics.Raycast(rayCollision, out hitInfo, 2.5f))
+        {
+            var selectedProp = hitInfo.transform;
+            if (canHold && selectedProp.CompareTag("Prop") && Controls.GetAction(UserAction.Pickup))
             {
-                var selectedProp = hitInfo.transform;
-                if (selectedProp.CompareTag("Prop") && Input.GetMouseButton(0))
-                {
-                    propHeld = hitInfo.transform.gameObject;
-                    propRb = propHeld.GetComponent<Rigidbody>();
-                    propRb.GetComponent<Rigidbody>().isKinematic = true;
+                propHeld = hitInfo.transform.gameObject;
+                propRb = propHeld.GetComponent<Rigidbody>();
+                propRb.isKinematic = true;
 
-                    propHeld.transform.parent = playerCam;
-                    beingCarried = true;
-                }
-                else
-                {
-                    objectPos = transform.position;
-                    propHeld = hitInfo.transform.gameObject;
-                    propRb = propHeld.GetComponent<Rigidbody>();
-                    propRb.GetComponent<Rigidbody>().isKinematic = false;
+                propHeld.transform.parent = playerCam;
+                beingCarried = true;
+            }
+            else
+            {
+                objectPos = transform.position;
+                propHeld = hitInfo.transform.gameObject;
+                propRb = propHeld.GetComponent<Rigidbody>();
+                propRb.isKinematic = false;
 
-                    propHeld.transform.parent = null;
-                    beingCarried = false;
-                }
-                if (beingCarried && Input.GetMouseButtonDown(1))
-                {
-                    propRb.GetComponent<Rigidbody>().isKinematic = false;
-                    propHeld.transform.parent = null; //unparents the object the player is carrying from the camera.
-                    beingCarried = false;
-                    propRb.GetComponent<Rigidbody>().AddForce(playerCam.transform.forward * 5f, ForceMode.Impulse); //takes the forward direction of theplayers position and instantly throws the box. 
-                    isThrowing = true;
-                }
+                propHeld.transform.parent = null;
+                beingCarried = false;
+            }
+            if (beingCarried && Controls.GetActionDown(UserAction.Throw))
+            {
+                canHold = false;
+                propRb.isKinematic = false;
+                propHeld.transform.parent = null; //unparents the object the player is carrying from the camera.
+                beingCarried = false;
+                propRb.AddForce(playerCam.transform.forward * throwForce, ForceMode.Impulse); //takes the forward direction of theplayers position and instantly throws the box. 
+                isThrowing = true;
             }
         }
 
